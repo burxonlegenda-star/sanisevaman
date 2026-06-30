@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<title>Romantik Sayt</title>
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+    background: radial-gradient(circle at top, #1a1a1a, #000);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    color: white;
+  }
+
+  .center {
+    text-align: center;
+    z-index: 2;
+  }
+
+  .heart {
+    font-size: 100px;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.2s;
+  }
+
+  .heart:active {
+    transform: scale(1.2);
+  }
+
+  .text {
+    margin-top: 20px;
+    font-size: 28px;
+    color: #ff4d6d;
+  }
+
+  .message {
+    margin-top: 15px;
+    font-size: 24px;
+    opacity: 0;
+    transition: 1s;
+    color: #ff9bb5;
+  }
+
+  .show {
+    opacity: 1;
+  }
+
+  .particle {
+    position: absolute;
+    font-size: 18px;
+    pointer-events: none;
+    animation: floatUp 1.2s ease-out forwards;
+  }
+
+  @keyframes floatUp {
+    0% {
+      transform: translate(0,0) scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(var(--x), var(--y)) scale(0.3);
+      opacity: 0;
+    }
+  }
+
+  .stars {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+
+  .star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: blink 2s infinite alternate;
+  }
+
+  @keyframes blink {
+    from { opacity: 0.2; }
+    to { opacity: 1; }
+  }
+
+  .hide {
+    display: none;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="stars" id="stars"></div>
+
+<div class="center">
+  <div class="heart" id="heart">❤️</div>
+  <div class="text" id="text"><h3>yurakni 10martda bos 💞</h3></div>
+  <div class="message" id="message"><h1>Seni sevaman ❤️</h1></div>
+</div>
+
+<script>
+const heart = document.getElementById("heart");
+const text = document.getElementById("text");
+const message = document.getElementById("message");
+
+let count = 0;
+
+heart.addEventListener("click", (e) => {
+  count++;
+
+  for (let i = 0; i < 10; i++) {
+    createParticle(e.clientX, e.clientY);
+  }
+
+  // 10 marta bosilganda hammasi yo'qoladi
+  if (count === 10) {
+    heart.classList.add("hide");
+    text.classList.add("hide");
+    message.classList.add("show");
+  }
+});
+
+function createParticle(x, y) {
+  const p = document.createElement("div");
+  p.classList.add("particle");
+  p.innerHTML = "💖";
+
+  const angle = Math.random() * 2 * Math.PI;
+  const distance = Math.random() * 140;
+
+  const xMove = Math.cos(angle) * distance + "px";
+  const yMove = Math.sin(angle) * distance + "px";
+
+  p.style.left = x + "px";
+  p.style.top = y + "px";
+  p.style.setProperty("--x", xMove);
+  p.style.setProperty("--y", yMove);
+
+  document.body.appendChild(p);
+
+  setTimeout(() => p.remove(), 1200);
+}
+
+// stars
+const stars = document.getElementById("stars");
+
+for (let i = 0; i < 80; i++) {
+  const star = document.createElement("div");
+  star.classList.add("star");
+
+  star.style.left = Math.random() * window.innerWidth + "px";
+  star.style.top = Math.random() * window.innerHeight + "px";
+
+  stars.appendChild(star);
+}
+</script>
+
+</body>
+</html>
